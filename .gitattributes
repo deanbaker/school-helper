@@ -1,2 +1,3 @@
 config.json filter=git-crypt diff=git-crypt
 uniforms.json filter=git-crypt diff=git-crypt
+reminders.json filter=git-crypt diff=git-crypt
