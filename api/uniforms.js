@@ -35,11 +35,7 @@ export default function handler(req, res) {
     return;
   }
 
-  const dayIndex = new Date(`${dateStr}T12:00:00`).getDay();
-
   res.json({
-    date: dateStr,
-    day: DAYS[dayIndex],
     frankie: getUniform('frankie', dateStr),
     maisie: getUniform('maisie', dateStr),
   });

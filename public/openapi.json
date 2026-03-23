@@ -31,8 +31,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "date":    { "type": "string", "example": "2026-03-23" },
-                    "day":     { "type": "string", "example": "Monday" },
                     "frankie": { "type": "string", "example": "sports uniform" },
                     "maisie":  { "type": "string", "example": "college uniform" }
                   }
