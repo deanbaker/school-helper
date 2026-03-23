@@ -32,10 +32,8 @@ All logic is in two config files and three shared libs — API handlers are thin
 - `speak.js` — Plain text, human-readable sentence with weather appended. Uses same smart offset. When `?date=` is provided, uses the day name ("Friday") instead of "Today"/"Tomorrow".
 
 **Other:**
-- `api/mcp.js` — MCP protocol endpoint at `/mcp`, largely unused in favour of the REST API.
-- `api/week.js` — Returns Mon–Fri uniform data for the current week, consumed by the landing page.
-- `public/index.html` — Landing page, fetches `/api/week` and renders a weekly card view.
-- `vercel.json` — Routes `/mcp` → `api/mcp.js`, sets 10s max duration.
+- `api/week.js` — Returns Mon–Fri uniform data for the current week, plus upcoming one-off reminders. Consumed by the landing page.
+- `public/index.html` — Landing page, fetches `/api/week` and renders a weekly card view with an upcoming reminders section below.
 
 ## Key behaviours to preserve
 

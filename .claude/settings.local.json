@@ -10,7 +10,16 @@
       "Bash(git push:*)",
       "Bash(curl:*)",
       "Bash(git filter-branch:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(gpg --list-secret-keys)",
+      "Bash(git-crypt init:*)",
+      "Bash(git-crypt add-gpg-user:*)",
+      "Bash(git-crypt status:*)",
+      "Bash(node:*)",
+      "Bash(ls:*)",
+      "Bash(npx vercel:*)",
+      "Bash(gh run:*)",
+      "Bash(xxd)"
     ]
   }
 }

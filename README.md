@@ -17,34 +17,7 @@ A Vercel-hosted API that tells you what uniform your kids need each day, plus th
 
 Click **Fork** on GitHub, then connect your fork to a new Vercel project.
 
-### 2. Set up git-crypt (recommended)
-
-This repo uses [git-crypt](https://github.com/AGWA/git-crypt) to encrypt `config.json` and `uniforms.json`. The versions in this repo are encrypted and unreadable to you — delete them and create your own.
-
-```bash
-brew install git-crypt
-gpg --full-generate-key          # create a GPG key if you don't have one
-git-crypt init
-gpg --list-secret-keys --keyid-format LONG  # find your key ID
-git-crypt add-gpg-user YOUR_KEY_ID
-```
-
-Then add a `.gitattributes` file to encrypt your config files:
-
-```
-config.json filter=git-crypt diff=git-crypt
-uniforms.json filter=git-crypt diff=git-crypt
-```
-
-**Back up your key** — if you lose it, your files are unrecoverable:
-
-```bash
-git-crypt export-key ~/git-crypt-backup.key
-```
-
-If you don't want encryption, skip this step and just create `config.json` and `uniforms.json` directly.
-
-### 4. Configure your location — `config.json`
+### 2. Configure your location — `config.json`
 
 ```json
 {
@@ -60,7 +33,7 @@ If you don't want encryption, skip this step and just create `config.json` and `
 - **timezone** — use a [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g. `Australia/Melbourne`, `America/New_York`, `Europe/London`
 - **latitude / longitude** — find yours at [latlong.net](https://www.latlong.net)
 
-### 5. Configure your children — `uniforms.json`
+### 3. Configure your children — `uniforms.json`
 
 ```json
 {
@@ -89,14 +62,16 @@ If you don't want encryption, skip this step and just create `config.json` and `
 - **exceptions** — one-off dates that override the schedule (excursions, mufti days, etc). Format: `YYYY-MM-DD`.
 - **nonSchoolDays** — school holidays and public holidays. Weekends are handled automatically.
 
-### 5. Set an API key
+### 4. Set up environment variables
 
-All API endpoints require an `API_KEY` environment variable. Set it in your Vercel project:
+In your Vercel project → **Settings → Environment Variables**, add:
 
-1. Go to your Vercel project → **Settings → Environment Variables**
-2. Add `API_KEY` with a strong random value (e.g. `openssl rand -hex 32`)
+| Variable | Value |
+|---|---|
+| `API_KEY` | A strong random value (e.g. `openssl rand -hex 32`) |
+| `REMINDERS_JSON` | The contents of your `reminders.json` (see below) |
 
-Pass the key on every request via the `x-api-key` header:
+Pass the API key on every request via the `x-api-key` header:
 
 ```
 x-api-key: <your-key>
@@ -110,7 +85,7 @@ For local development, add it to a `.env` file:
 API_KEY=your-key-here
 ```
 
-### 6. Deploy
+### 5. Deploy
 
 ```bash
 git add config.json uniforms.json
@@ -154,7 +129,9 @@ Friday, Frankie is in sports uniform and swimming and Maisie is in sports unifor
 
 ## Reminders
 
-`reminders.json` lets you attach reminders to the spoken output and weekly card view. Two types are supported:
+Reminders are stored in `reminders.json` locally and deployed via the `REMINDERS_JSON` Vercel environment variable. The file is gitignored — it never touches the repo.
+
+Two types are supported:
 
 **One-off reminder** — surfaces from the Monday of the event's week through to the event date itself:
 
@@ -190,7 +167,7 @@ If you have Claude Code, you can add reminders using natural language:
 /remind Swimming after school every Wednesday
 ```
 
-Claude will resolve the date, update `reminders.json`, and push the updated `REMINDERS_JSON` environment variable directly to Vercel. No git commit needed — `reminders.json` stays encrypted and local.
+Claude will resolve the date, update `reminders.json`, and push the updated `REMINDERS_JSON` environment variable directly to Vercel — no manual steps needed.
 
 ### Output
 
@@ -198,15 +175,11 @@ Reminders appear appended to the `/api/uniforms/speak` response, e.g.:
 > *Reminder: today is Parent-teacher interviews!*
 > *Reminder: Swimming after school is on Wednesday.*
 
-They also appear on the weekly landing page card for each relevant day.
-
-> **Note:** `reminders.json` is encrypted with git-crypt alongside `config.json` and `uniforms.json`.
+They also appear on the weekly landing page card for each relevant day, and in the upcoming reminders section below the week view.
 
 ---
 
 ## Updating throughout the year
-
-If you're using git-crypt, make sure your repo is unlocked before editing (`git-crypt status` will show `encrypted` next to the files when locked). On a new machine, run `git-crypt unlock ~/git-crypt-backup.key` first.
 
 **Change a uniform day:**
 Edit `uniforms.json` → update the relevant day under `schedule` → commit and push.
@@ -216,6 +189,14 @@ Edit `uniforms.json` → add each date to `nonSchoolDays` → commit and push.
 
 **Add an excursion or mufti day:**
 Edit `uniforms.json` → add the date under `exceptions` for the relevant child → commit and push.
+
+**Add a reminder:**
+Use `/remind` in Claude Code, or edit `reminders.json` directly and run:
+```bash
+npx vercel env rm REMINDERS_JSON production --yes
+cat reminders.json | npx vercel env add REMINDERS_JSON production
+npx vercel --prod --yes
+```
 
 ---
 

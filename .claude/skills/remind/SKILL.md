@@ -1,6 +1,6 @@
 ---
 name: remind
-description: Add a reminder to reminders.json using natural language. Use when the user says "remind me about X on [date]" or "add a reminder for X".
+description: Add a reminder to reminders.json and deploy it to Vercel. Use when the user says "remind me about X on [date]" or "add a reminder for X".
 argument-hint: <event description and date>
 ---
 
