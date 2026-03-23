@@ -1,6 +1,7 @@
 import { getUniform, sydneyDate, sydneyNow } from '../../lib/getUniforms.js';
+import { getWeather } from '../../lib/getWeather.js';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 
@@ -10,6 +11,7 @@ export default function handler(req, res) {
 
   const frankie = getUniform('frankie', dateStr);
   const maisie = getUniform('maisie', dateStr);
+  const weather = await getWeather(dateStr);
   const when = isTomorrow ? 'Tomorrow' : 'Today';
 
   let message;
@@ -17,6 +19,10 @@ export default function handler(req, res) {
     message = `${when} is ${frankie}, no uniforms needed.`;
   } else {
     message = `${when}, Frankie is in ${frankie} and Maisie is in ${maisie}.`;
+  }
+
+  if (weather) {
+    message += ` The weather will be ${weather.min} to ${weather.max} degrees with ${weather.condition}.`;
   }
 
   res.setHeader('Content-Type', 'text/plain');
