@@ -22,7 +22,8 @@ export default async function handler(req, res) {
   }
 
   if (weather) {
-    message += ` The weather will be ${weather.min} to ${weather.max} degrees with ${weather.condition}.`;
+    message += ` The weather will be ${weather.min} to ${weather.max} degrees with ${weather.condition}`;
+    message += weather.rainTiming ? `, with rain expected ${weather.rainTiming}.` : `.`;
   }
 
   res.setHeader('Content-Type', 'text/plain');
