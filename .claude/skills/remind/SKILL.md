@@ -8,12 +8,25 @@ Add a reminder to `reminders.json` in the project root.
 
 The user said: $ARGUMENTS
 
-Steps:
-1. Use today's date from context to resolve any relative date ("next Tuesday", "this Friday", "tomorrow") to a YYYY-MM-DD string.
-2. Extract a clean label — the event name without the date reference.
+Determine whether this is a **one-off** or **recurring** reminder:
+- **Recurring**: mentions "every [day]", "each [day]", or "[day]s" (e.g. "every Wednesday", "Tuesdays") — no specific date.
+- **One-off**: mentions a specific date or relative date ("next Tuesday", "this Friday", "tomorrow").
+
+**For a recurring reminder:**
+1. Extract a clean label (event name without the day reference).
+2. Identify the day name (e.g. "Wednesday").
 3. Read `reminders.json`.
-4. Append a new entry: `{ "label": "<label>", "date": "<YYYY-MM-DD>" }`.
-   - Only include `"remindFromDate"` if the user explicitly says when to start reminding; otherwise omit it (the app defaults to Monday of the event's week).
+4. Append: `{ "label": "<label>", "day": "<DayName>" }`.
+5. Write the updated JSON back to `reminders.json`.
+6. Run: `git add reminders.json && git commit -m "Add recurring reminder: <label>" && git push`
+7. Confirm to the user: show the label, the day it will appear on, and that the change has been pushed.
+
+**For a one-off reminder:**
+1. Use today's date from context to resolve the date to YYYY-MM-DD.
+2. Extract a clean label (event name without the date reference).
+3. Read `reminders.json`.
+4. Append: `{ "label": "<label>", "date": "<YYYY-MM-DD>" }`.
+   - Only include `"remindFromDate"` if the user explicitly says when to start reminding; otherwise omit it (defaults to Monday of the event's week).
 5. Write the updated JSON back to `reminders.json`.
 6. Run: `git add reminders.json && git commit -m "Add reminder: <label>" && git push`
-7. Confirm to the user: show the label, resolved date, when reminders will start appearing (Monday of that week), and that the change has been pushed so Vercel will deploy it.
+7. Confirm to the user: show the label, resolved date, when reminders will start appearing (Monday of that week), and that the change has been pushed.
