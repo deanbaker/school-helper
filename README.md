@@ -17,7 +17,34 @@ A Vercel-hosted API and MCP server that tells you what uniform your kids need ea
 
 Click **Fork** on GitHub, then connect your fork to a new Vercel project.
 
-### 2. Configure your location — `config.json`
+### 2. Set up git-crypt (recommended)
+
+This repo uses [git-crypt](https://github.com/AGWA/git-crypt) to encrypt `config.json` and `uniforms.json`. The versions in this repo are encrypted and unreadable to you — delete them and create your own.
+
+```bash
+brew install git-crypt
+gpg --full-generate-key          # create a GPG key if you don't have one
+git-crypt init
+gpg --list-secret-keys --keyid-format LONG  # find your key ID
+git-crypt add-gpg-user YOUR_KEY_ID
+```
+
+Then add a `.gitattributes` file to encrypt your config files:
+
+```
+config.json filter=git-crypt diff=git-crypt
+uniforms.json filter=git-crypt diff=git-crypt
+```
+
+**Back up your key** — if you lose it, your files are unrecoverable:
+
+```bash
+git-crypt export-key ~/git-crypt-backup.key
+```
+
+If you don't want encryption, skip this step and just create `config.json` and `uniforms.json` directly.
+
+### 4. Configure your location — `config.json`
 
 ```json
 {
@@ -33,7 +60,7 @@ Click **Fork** on GitHub, then connect your fork to a new Vercel project.
 - **timezone** — use a [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g. `Australia/Melbourne`, `America/New_York`, `Europe/London`
 - **latitude / longitude** — find yours at [latlong.net](https://www.latlong.net)
 
-### 3. Configure your children — `uniforms.json`
+### 5. Configure your children — `uniforms.json`
 
 ```json
 {
@@ -62,7 +89,7 @@ Click **Fork** on GitHub, then connect your fork to a new Vercel project.
 - **exceptions** — one-off dates that override the schedule (excursions, mufti days, etc). Format: `YYYY-MM-DD`.
 - **nonSchoolDays** — school holidays and public holidays. Weekends are handled automatically.
 
-### 4. Set an API key
+### 5. Set an API key
 
 All API endpoints require an `API_KEY` environment variable. Set it in your Vercel project:
 
@@ -81,7 +108,7 @@ For local development, add it to a `.env` file:
 API_KEY=your-key-here
 ```
 
-### 5. Deploy
+### 6. Deploy
 
 ```bash
 git add config.json uniforms.json
@@ -125,6 +152,8 @@ Friday, Frankie is in sports uniform and swimming and Maisie is in sports unifor
 ---
 
 ## Updating throughout the year
+
+If you're using git-crypt, make sure your repo is unlocked before editing (`git-crypt status` will show `encrypted` next to the files when locked). On a new machine, run `git-crypt unlock ~/git-crypt-backup.key` first.
 
 **Change a uniform day:**
 Edit `uniforms.json` → update the relevant day under `schedule` → commit and push.
