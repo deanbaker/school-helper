@@ -186,11 +186,7 @@ Reminders appear appended to the `/api/uniforms/speak` response, e.g.:
 
 They also appear on the weekly landing page card for each relevant day.
 
-> **Note:** `reminders.json` is not encrypted by default. If your reminders contain sensitive information, add it to `.gitattributes`:
-> ```
-> reminders.json filter=git-crypt diff=git-crypt
-> ```
-> Then run `git-crypt status -f && git commit` to encrypt the staged version.
+> **Note:** `reminders.json` is encrypted with git-crypt alongside `config.json` and `uniforms.json`.
 
 ---
 
