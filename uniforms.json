@@ -2,11 +2,11 @@
   "children": {
     "frankie": {
       "schedule": {
-        "Monday": "sports uniform",
-        "Tuesday": "college uniform",
+        "Monday": "college uniform",
+        "Tuesday": "sports uniform",
         "Wednesday": "college uniform",
-        "Thursday": "sports uniform",
-        "Friday": "house uniform"
+        "Thursday": "college uniform",
+        "Friday": "sports uniform, and swimming"
       },
       "exceptions": {
         "2026-04-10": "mufti day"
@@ -15,8 +15,8 @@
     "maisie": {
       "schedule": {
         "Monday": "college uniform",
-        "Tuesday": "sports uniform",
-        "Wednesday": "house uniform",
+        "Tuesday": "house uniform",
+        "Wednesday": "college uniform",
         "Thursday": "college uniform",
         "Friday": "sports uniform"
       },
