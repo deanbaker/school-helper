@@ -180,6 +180,19 @@ Full example:
 }
 ```
 
+### Adding reminders via Claude Code
+
+If you have Claude Code, you can add reminders using natural language:
+
+```
+/remind Parent-teacher interviews on March 31
+/remind Swimming after school every Wednesday
+```
+
+Claude will resolve the date, update `reminders.json`, commit, and push automatically.
+
+### Output
+
 Reminders appear appended to the `/api/uniforms/speak` response, e.g.:
 > *Reminder: today is Parent-teacher interviews!*
 > *Reminder: Swimming after school is on Wednesday.*
