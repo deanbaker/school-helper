@@ -28,9 +28,10 @@ Determine whether this is a **one-off** or **recurring** reminder:
 5. Write the updated JSON back to `reminders.json`.
 
 **Finalise (both types)**
-1. Push the updated `REMINDERS_JSON` env var to Vercel by running these two commands in sequence:
+1. Push the updated `REMINDERS_JSON` env var to Vercel by running these commands in sequence:
    ```
-   vercel env rm REMINDERS_JSON production --yes
-   cat reminders.json | vercel env add REMINDERS_JSON production
+   npx vercel env rm REMINDERS_JSON production --yes
+   cat reminders.json | npx vercel env add REMINDERS_JSON production
+   npx vercel --prod --yes
    ```
-2. Confirm to the user: show the label, the date or day it applies to, and that the Vercel env var has been updated.
+2. Confirm to the user: show the label, the date or day it applies to, and that the change is live on Vercel.
