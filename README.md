@@ -190,7 +190,7 @@ If you have Claude Code, you can add reminders using natural language:
 /remind Swimming after school every Wednesday
 ```
 
-Claude will resolve the date, update `reminders.json`, commit, and push automatically.
+Claude will resolve the date, update `reminders.json`, and push the updated `REMINDERS_JSON` environment variable directly to Vercel. No git commit needed — `reminders.json` stays encrypted and local.
 
 ### Output
 

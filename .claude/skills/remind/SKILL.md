@@ -18,8 +18,6 @@ Determine whether this is a **one-off** or **recurring** reminder:
 3. Read `reminders.json`.
 4. Append: `{ "label": "<label>", "day": "<DayName>" }`.
 5. Write the updated JSON back to `reminders.json`.
-6. Run: `git add reminders.json && git commit -m "Add recurring reminder: <label>" && git push`
-7. Confirm to the user: show the label, the day it will appear on, and that the change has been pushed.
 
 **For a one-off reminder:**
 1. Use today's date from context to resolve the date to YYYY-MM-DD.
@@ -28,8 +26,11 @@ Determine whether this is a **one-off** or **recurring** reminder:
 4. Append: `{ "label": "<label>", "date": "<YYYY-MM-DD>" }`.
    - Only include `"remindFromDate"` if the user explicitly says when to start reminding; otherwise omit it (defaults to Monday of the event's week).
 5. Write the updated JSON back to `reminders.json`.
-6. Run: `git add reminders.json && git commit -m "Add reminder: <label>" && git push`
-7. Confirm to the user: show the label, resolved date, when reminders will start appearing (Monday of that week), and that the change has been pushed.
 
-**Finalise**
-1. Commit with a clean message, and push to main.
+**Finalise (both types)**
+1. Push the updated `REMINDERS_JSON` env var to Vercel by running these two commands in sequence:
+   ```
+   vercel env rm REMINDERS_JSON production --yes
+   cat reminders.json | vercel env add REMINDERS_JSON production
+   ```
+2. Confirm to the user: show the label, the date or day it applies to, and that the Vercel env var has been updated.
