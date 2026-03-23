@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { getReminders } from '../lib/getReminders.js';
+import { getReminders, getUpcomingReminders } from '../lib/getReminders.js';
 import { requireApiKey } from '../lib/auth.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -46,7 +46,10 @@ export default function handler(req, res) {
 
   const today = now.toLocaleDateString('en-CA');
 
+  // Upcoming = one-off reminders from today onwards (includes this week and beyond)
+  const upcoming = getUpcomingReminders(today);
+
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Cache-Control', 'no-store');
-  res.json({ week, today });
+  res.json({ week, today, upcoming });
 }

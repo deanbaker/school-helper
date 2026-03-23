@@ -138,6 +138,57 @@
       border-radius: 6px;
     }
 
+    .upcoming-section {
+      max-width: 520px;
+      margin: 24px auto 0;
+    }
+
+    .upcoming-section h2 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6e6e73;
+      margin-bottom: 10px;
+    }
+
+    .upcoming-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .upcoming-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .upcoming-date {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #c2410c;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 6px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    .upcoming-label {
+      font-size: 0.875rem;
+      color: #1d1d1f;
+    }
+
+    .upcoming-empty {
+      font-size: 0.875rem;
+      color: #6e6e73;
+    }
+
     .skeleton .day-card {
       background: #e5e7eb;
       animation: pulse 1.2s ease-in-out infinite;
@@ -161,6 +212,11 @@
 
   <div class="week" id="week"></div>
 
+  <section class="upcoming-section" id="upcoming-section" style="display:none">
+    <h2>Upcoming Reminders</h2>
+    <div class="upcoming-list" id="upcoming-list"></div>
+  </section>
+
   <script>
     const SHORT_DATE = { day: 'numeric', month: 'short' };
 
@@ -181,6 +237,25 @@
     function formatDate(dateStr) {
       const [y, m, d] = dateStr.split('-').map(Number);
       return new Date(y, m - 1, d).toLocaleDateString('en-AU', SHORT_DATE);
+    }
+
+    function renderUpcoming(upcoming) {
+      const section = document.getElementById('upcoming-section');
+      const list = document.getElementById('upcoming-list');
+
+      if (!upcoming || upcoming.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      list.innerHTML = upcoming.map(({ label, date }) => `
+        <div class="upcoming-item">
+          <span class="upcoming-date">${formatDate(date)}</span>
+          <span class="upcoming-label">${label}</span>
+        </div>
+      `).join('');
+
+      section.style.display = '';
     }
 
     function renderWeek(week, today) {
@@ -249,10 +324,11 @@
           return;
         }
 
-        const { week, today } = await res.json();
+        const { week, today, upcoming } = await res.json();
         const subtitleDate = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
         document.getElementById('subtitle').textContent = subtitleDate;
         renderWeek(week, today);
+        renderUpcoming(upcoming);
       } catch (e) {
         document.getElementById('subtitle').textContent = 'Could not load uniform data';
       }

@@ -1,6 +1,6 @@
-# Uniforms MCP
+# Uniforms
 
-A Vercel-hosted API and MCP server that tells you what uniform your kids need each day, plus the local weather forecast. Built for busy school mornings.
+A Vercel-hosted API that tells you what uniform your kids need each day, plus the local weather forecast. Built for busy school mornings.
 
 ## How it works
 
@@ -96,9 +96,11 @@ All API endpoints require an `API_KEY` environment variable. Set it in your Verc
 1. Go to your Vercel project → **Settings → Environment Variables**
 2. Add `API_KEY` with a strong random value (e.g. `openssl rand -hex 32`)
 
-Pass the key on every request via header or query param:
-- Header: `x-api-key: <your-key>`
-- Query param: `?apiKey=<your-key>`
+Pass the key on every request via the `x-api-key` header:
+
+```
+x-api-key: <your-key>
+```
 
 The landing page will prompt for the key on first visit and store it in `localStorage`.
 
@@ -122,7 +124,7 @@ Vercel auto-deploys on every push.
 
 ## API endpoints
 
-All endpoints require authentication via `x-api-key` header or `?apiKey=` query param.
+All endpoints require the `x-api-key` header.
 
 | Endpoint | Returns |
 |---|---|
@@ -132,7 +134,6 @@ All endpoints require authentication via `x-api-key` header or `?apiKey=` query 
 | `GET /api/uniforms/speak` | Plain text — human-readable with weather, for Siri |
 | `GET /api/uniforms/speak?date=YYYY-MM-DD` | Plain text — specific date |
 | `GET /api/week` | JSON — Mon–Fri schedule for the current week |
-| `POST /mcp` | MCP protocol endpoint |
 
 ### Example response — `/api/uniforms`
 
@@ -221,7 +222,8 @@ Edit `uniforms.json` → add the date under `exceptions` for the relevant child 
 ## Siri shortcut
 
 1. Open **Shortcuts** → New Shortcut
-2. Add **Get Contents of URL** → `https://your-project.vercel.app/api/uniforms/speak?apiKey=YOUR_KEY`
+2. Add **Get Contents of URL** → URL: `https://your-project.vercel.app/api/uniforms/speak`
+   - Expand **Headers** → add `x-api-key` : `YOUR_KEY`
 3. Add **Speak Text** → input: `Contents of URL`
 4. Name it **"School uniforms"** → Add to Siri
 
