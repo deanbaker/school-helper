@@ -1,0 +1,50 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Uniforms API",
+    "description": "Returns school uniform requirements for Frankie and Maisie.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "https://uniform-mcp.vercel.app" }
+  ],
+  "paths": {
+    "/api/uniforms": {
+      "get": {
+        "operationId": "getUniforms",
+        "summary": "Get uniform for a date",
+        "description": "Returns the required uniform for Frankie and Maisie on the given date. Omit the date parameter to get today's uniform.",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "description": "Date in YYYY-MM-DD format. Defaults to today (Sydney time).",
+            "schema": { "type": "string", "example": "2026-03-23" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uniform data for the requested date",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date":    { "type": "string", "example": "2026-03-23" },
+                    "day":     { "type": "string", "example": "Monday" },
+                    "frankie": { "type": "string", "example": "sports uniform" },
+                    "maisie":  { "type": "string", "example": "college uniform" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid date format"
+          }
+        }
+      }
+    }
+  }
+}
