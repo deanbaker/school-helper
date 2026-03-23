@@ -5,14 +5,18 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const hour = sydneyNow().getHours();
   const isTomorrow = hour >= 10;
-  const dateStr = req.query.date || sydneyDate(isTomorrow ? 1 : 0);
+  const explicitDate = req.query.date;
+  const dateStr = explicitDate || sydneyDate(isTomorrow ? 1 : 0);
 
   const frankie = getUniform('frankie', dateStr);
   const maisie = getUniform('maisie', dateStr);
   const weather = await getWeather(dateStr);
-  const when = isTomorrow ? 'Tomorrow' : 'Today';
+  const when = explicitDate
+    ? DAYS[new Date(`${dateStr}T12:00:00`).getDay()]
+    : isTomorrow ? 'Tomorrow' : 'Today';
 
   let message;
   if (['holidays', 'weekend', 'no school'].includes(frankie)) {
