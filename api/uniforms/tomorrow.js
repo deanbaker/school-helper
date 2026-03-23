@@ -1,6 +1,8 @@
 import { getUniform, localDate } from '../../lib/getUniforms.js';
+import { requireApiKey } from '../../lib/auth.js';
 
 export default function handler(req, res) {
+  if (!requireApiKey(req, res)) return;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 

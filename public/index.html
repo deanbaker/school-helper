@@ -223,15 +223,35 @@
       });
     }
 
-    async function load() {
-      try {
-        const res = await fetch('/api/week');
-        const { week, today } = await res.json();
+    function getStoredKey() {
+      return localStorage.getItem('apiKey');
+    }
 
-        const todayEntry = week.find(d => d.date === today);
+    function promptForKey() {
+      const key = prompt('Enter API key:');
+      if (key) localStorage.setItem('apiKey', key);
+      return key;
+    }
+
+    async function load() {
+      let key = getStoredKey() || promptForKey();
+      if (!key) {
+        document.getElementById('subtitle').textContent = 'API key required';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/week', { headers: { 'x-api-key': key } });
+
+        if (res.status === 401) {
+          localStorage.removeItem('apiKey');
+          document.getElementById('subtitle').textContent = 'Invalid API key';
+          return;
+        }
+
+        const { week, today } = await res.json();
         const subtitleDate = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
         document.getElementById('subtitle').textContent = subtitleDate;
-
         renderWeek(week, today);
       } catch (e) {
         document.getElementById('subtitle').textContent = 'Could not load uniform data';

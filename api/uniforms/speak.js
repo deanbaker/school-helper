@@ -1,8 +1,10 @@
 import { getUniform, localDate, localNow } from '../../lib/getUniforms.js';
 import { getWeather } from '../../lib/getWeather.js';
 import { getReminders } from '../../lib/getReminders.js';
+import { requireApiKey } from '../../lib/auth.js';
 
 export default async function handler(req, res) {
+  if (!requireApiKey(req, res)) return;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
 

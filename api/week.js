@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { getReminders } from '../lib/getReminders.js';
+import { requireApiKey } from '../lib/auth.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const uniforms = JSON.parse(readFileSync(join(__dirname, '..', 'uniforms.json'), 'utf8'));
@@ -23,6 +24,7 @@ function getUniform(child, dateStr) {
 }
 
 export default function handler(req, res) {
+  if (!requireApiKey(req, res)) return;
   const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
   const dayOfWeek = now.getDay();
   const monday = new Date(now);
