@@ -12,7 +12,7 @@ No build step, no tests, no linter. It's a serverless Node.js project — change
 
 ## Deployment
 
-Push to `main` on GitHub → Vercel auto-deploys. The live URL is `https://school-helper.vercel.app` (or current Vercel project URL).
+Push to `main` on GitHub → Vercel auto-deploys. The live URL is `https://uniform-mcp.vercel.app`.
 
 ## Architecture
 
