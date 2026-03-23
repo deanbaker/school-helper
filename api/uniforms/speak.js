@@ -1,4 +1,4 @@
-import { getUniform, sydneyDate, sydneyNow } from '../../lib/getUniforms.js';
+import { getUniform, localDate, localNow } from '../../lib/getUniforms.js';
 import { getWeather } from '../../lib/getWeather.js';
 
 export default async function handler(req, res) {
@@ -6,10 +6,10 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const hour = sydneyNow().getHours();
+  const hour = localNow().getHours();
   const isTomorrow = hour >= 10;
   const explicitDate = req.query.date;
-  const dateStr = explicitDate || sydneyDate(isTomorrow ? 1 : 0);
+  const dateStr = explicitDate || localDate(isTomorrow ? 1 : 0);
 
   const frankie = getUniform('frankie', dateStr);
   const maisie = getUniform('maisie', dateStr);
