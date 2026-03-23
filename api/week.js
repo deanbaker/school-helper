@@ -5,7 +5,7 @@ import { getReminders, getUpcomingReminders } from '../lib/getReminders.js';
 import { requireApiKey } from '../lib/auth.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const uniforms = JSON.parse(process.env.UNIFORMS_JSON || readFileSync(join(__dirname, '..', 'uniforms.json'), 'utf8'));
+const uniforms = JSON.parse(readFileSync(join(__dirname, '..', 'uniforms.json'), 'utf8'));
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
