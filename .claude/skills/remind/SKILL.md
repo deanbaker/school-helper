@@ -30,3 +30,6 @@ Determine whether this is a **one-off** or **recurring** reminder:
 5. Write the updated JSON back to `reminders.json`.
 6. Run: `git add reminders.json && git commit -m "Add reminder: <label>" && git push`
 7. Confirm to the user: show the label, resolved date, when reminders will start appearing (Monday of that week), and that the change has been pushed.
+
+**Finalise**
+1. Commit with a clean message, and push to main.
