@@ -151,6 +151,49 @@ Friday, Frankie is in sports uniform and swimming and Maisie is in sports unifor
 
 ---
 
+## Reminders
+
+`reminders.json` lets you attach reminders to the spoken output and weekly card view. Two types are supported:
+
+**One-off reminder** — surfaces from the Monday of the event's week through to the event date itself:
+
+```json
+{ "label": "Parent-teacher interviews", "date": "2026-03-31" }
+```
+
+Optionally override when it starts appearing with `"remindFromDate": "YYYY-MM-DD"`.
+
+**Recurring reminder** — surfaces every week on the specified day:
+
+```json
+{ "label": "Swimming after school", "day": "Wednesday" }
+```
+
+Full example:
+
+```json
+{
+  "reminders": [
+    { "label": "Parent-teacher interviews", "date": "2026-03-31" },
+    { "label": "Swimming after school", "day": "Wednesday" }
+  ]
+}
+```
+
+Reminders appear appended to the `/api/uniforms/speak` response, e.g.:
+> *Reminder: today is Parent-teacher interviews!*
+> *Reminder: Swimming after school is on Wednesday.*
+
+They also appear on the weekly landing page card for each relevant day.
+
+> **Note:** `reminders.json` is not encrypted by default. If your reminders contain sensitive information, add it to `.gitattributes`:
+> ```
+> reminders.json filter=git-crypt diff=git-crypt
+> ```
+> Then run `git-crypt status -f && git commit` to encrypt the staged version.
+
+---
+
 ## Updating throughout the year
 
 If you're using git-crypt, make sure your repo is unlocked before editing (`git-crypt status` will show `encrypted` next to the files when locked). On a new machine, run `git-crypt unlock ~/git-crypt-backup.key` first.
