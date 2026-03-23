@@ -118,6 +118,26 @@
     .u-mufti     { background: #fce7f3; color: #be185d; }
     .u-off       { background: #f3f4f6; color: #9ca3af; }
 
+    .reminders {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .reminder-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
     .skeleton .day-card {
       background: #e5e7eb;
       animation: pulse 1.2s ease-in-out infinite;
@@ -167,7 +187,7 @@
       const container = document.getElementById('week');
       container.innerHTML = '';
 
-      week.forEach(({ date, day, frankie, maisie }) => {
+      week.forEach(({ date, day, frankie, maisie, reminders = [] }) => {
         const isToday = date === today;
         const isOff = ['holidays', 'weekend', 'no school'].includes(frankie);
 
@@ -192,6 +212,10 @@
                   <span class="uniform-badge ${uniformClass(maisie)}">${capitalise(maisie)}</span>
                 </div>
               </div>`
+          }
+          ${reminders.length > 0
+            ? `<div class="reminders">${reminders.map(r => `<span class="reminder-badge">&#128276; ${r}</span>`).join('')}</div>`
+            : ''
           }
         `;
 

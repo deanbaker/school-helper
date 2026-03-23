@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { getReminders } from '../lib/getReminders.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const uniforms = JSON.parse(readFileSync(join(__dirname, '..', 'uniforms.json'), 'utf8'));
@@ -37,6 +38,7 @@ export default function handler(req, res) {
       day: DAYS[d.getDay()],
       frankie: getUniform('frankie', dateStr),
       maisie: getUniform('maisie', dateStr),
+      reminders: getReminders(dateStr).map(r => r.label),
     });
   }
 

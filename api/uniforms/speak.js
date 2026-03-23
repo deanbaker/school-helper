@@ -1,5 +1,6 @@
 import { getUniform, localDate, localNow } from '../../lib/getUniforms.js';
 import { getWeather } from '../../lib/getWeather.js';
+import { getReminders } from '../../lib/getReminders.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,6 +29,16 @@ export default async function handler(req, res) {
   if (weather) {
     message += ` The weather will be ${weather.min} to ${weather.max} degrees with ${weather.condition}`;
     message += weather.rainTiming ? `, with rain expected ${weather.rainTiming}.` : `.`;
+  }
+
+  const reminders = getReminders(dateStr);
+  for (const r of reminders) {
+    if (r.isToday) {
+      message += ` Reminder: today is ${r.label}!`;
+    } else {
+      const dayName = DAYS[new Date(`${r.date}T12:00:00`).getDay()];
+      message += ` Reminder: ${r.label} is on ${dayName}.`;
+    }
   }
 
   res.setHeader('Content-Type', 'text/plain');
